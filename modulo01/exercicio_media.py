@@ -12,4 +12,5 @@ elif media >= 4:
   print(f'Você não foi aprovado está com média {media}, mas poderá fazer a recuperação ')
 else:
   print(f'Infelizmente você foi reprovado com média {media}!!!')
+  
 
