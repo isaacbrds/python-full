@@ -19,7 +19,7 @@ class PessoaController:
     def ler(cls):
         try:
             pessoas = PessoaDal.ler()
-
+            return pessoas    
         except:
             return False
 
