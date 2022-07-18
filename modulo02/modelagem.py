@@ -1,4 +1,6 @@
 class Pessoas:
+  possui_boca = True
+  raca = "Humana"
   def __init__(self,  nome, idade, cpf):
     self.nome = nome
     self.idade = idade
@@ -16,3 +18,4 @@ print(pessoa1.nome)
 print(pessoa1.cpf)
 
 pessoa1.logar_sistema()
+print(Pessoas.possui_boca)
