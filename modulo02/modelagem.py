@@ -4,8 +4,11 @@ class Pessoas:
     self.idade = idade
     self.cpf = cpf
 
+  def retorna_nome(self):
+    return self.nome
+
   def logar_sistema(self):
-    print(f'{self.nome} - Logando no sistema')
+    print(f'{self.retorna_nome()} - Logando no sistema')
   
 pessoa1 = Pessoas('Isaac', 39, '000.211.185-75')
 
