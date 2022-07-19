@@ -48,8 +48,70 @@ class DaoVenda:
     
     return vendas
 
-#produto = Produtos('Maçã', '20', 'Frutas')
-#venda = Venda(produto, 'Vendedor', 'Comprador', '10')
-#DaoVenda.salvar(venda)
-venda = DaoVenda.ler()
-print(venda[0].itensVendido.nome)
+class DaoEstoque:
+  @classmethod
+  def salvar(cls, produto: Produtos, quantidade):
+    with open('estoque.txt', 'a') as arquivo:
+      arquivo.writelines(produto.nome + "|" + produto.preco + "|" + produto.categoria +
+      "|" + str(quantidade))
+      arquivo.writelines("\n")
+
+  @classmethod
+  def ler(cls):
+    with open('estoque.txt', 'r') as arquivo:
+      cls.estoque = arquivo.readlines()
+    
+    cls.estoque = list(map(lambda x: x.replace('\n', ''), cls.estoque))
+    cls.estoque = list(map(lambda x: x.split('|'), cls.estoque))
+
+    estoque = []
+
+    if len(cls.estoque) > 0:
+      for i in cls.estoque:
+        estoque.append(Estoque(Produtos(i[0], i[1], i[2]), i[3] ))
+      
+    return estoque
+
+class DaoFornecedor:
+  @classmethod
+  def salvar(cls, fornecedor: Fornecedor):
+    with open('fornecedor.txt', 'a') as arquivo:
+      arquivo.writelines(fornecedor.nome + "|" + fornecedor.cnpj + "|" + fornecedor.telefone
+      +"|" + fornecedor.categoria)
+      arquivo.writelines("\n")
+
+  @classmethod
+  def ler(cls):
+    with open('fornecedor.txt', 'r') as arquivo:
+      cls.fornecedor = arquivo.readlines()
+    
+    cls.fornecedor = list(map(lambda x: x.replace('\n', ''), cls.fornecedor))
+    cls.fornecedor = list(map(lambda x: x.split('|'), cls.fornecedor))
+
+    fornecedores = []
+    for i in cls.fornecedor:
+      fornecedores.append(Fornecedor(i[0], i[1], i[2],i[3]))
+
+    return fornecedores
+
+class DaoPessoa:
+  @classmethod
+  def salvar(cls,pessoas: Pessoa):
+    with open('clientes.txt', 'a') as arquivo:
+      arquivo.writelines(pessoas.nome + "|" + pessoas.telefone + pessoas.cpf
+      + "|" + pessoas.email + "|" + pessoas.endereco)
+      arquivo.writelines("\n")
+
+  @classmethod
+  def ler(cls):
+    with open('clientes', 'r') as arquivo:
+      cls.clientes = arquivo.readlines()
+    
+    cls.clientes = list(map(lambda x: x.replace('\n', ''), cls.clientes))
+    cls.clientes = list(map(lambda x: x.split('|'), cls.clientes))
+
+    clientes = []
+    for i in cls.clientes:
+      clientes.append(Pessoa(i[0], i[1], i[2], i[3], i[4]))
+    
+    return clientes
