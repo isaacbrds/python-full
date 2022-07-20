@@ -42,6 +42,7 @@ class ControllerCategoria:
       categoria_nao_existe = list(filter(lambda x: x.categoria == categoriaAlterada, categorias))
       if len(categoria_nao_existe) == 0:
         categorias = list(map(lambda x: Categoria(categoriaAlterada) if(x.categoria == categoriaAlterar) else(x), categorias))
+        print('A alteração foi realizada com sucesso!')
       else:
         print('A categoria que deseja alterar já existe')
     else: 
@@ -52,3 +53,17 @@ class ControllerCategoria:
         arquivo.writelines(i.categoria)
         arquivo.writelines('\n')
 
+  def mostrar(self, categoria):
+    categorias = DaoCategoria.ler()
+
+    categoria = list(filter(lambda x: x.categoria == categoria, categorias))
+
+    if len(categoria) > 0:
+      for i in categoria:
+        print(i.categoria)
+    else:
+      print('Categoria não encontrada!')
+
+
+cat = ControllerCategoria()
+cat.mostrar('Banana')
