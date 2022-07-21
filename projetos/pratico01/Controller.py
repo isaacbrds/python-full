@@ -87,10 +87,12 @@ class ControllerEstoque:
     estoque_lido = DaoEstoque.ler()
     estoque_filtrado = list(filter(lambda x: x.produto.nome == nome, estoque_lido))
     if len(estoque_filtrado) > 0:
-      for i in range(estoque_lido):
+      for i in range(len(estoque_lido)):
         if estoque_lido[i].produto.nome == nome:
           del(estoque_lido[i])
           break
+
+      print('Produto removido com sucesso!')
     else:
       print('Esse produto não existe em estoque')
     
@@ -99,7 +101,33 @@ class ControllerEstoque:
         arquivo.writelines(i.produto.nome + "|" + i.produto.preco 
         + "|" + i.produto.categoria + "|" + str(i.quantidade))
         arquivo.writelines("\n")
-    
+
+  def alterar(self, nomeAlterar, novoNome, novoPreco, novaCategoria, novaQuantidade):
+    estoque_lido = DaoEstoque.ler()  
+    cateogira_lida = DaoCategoria.ler()
+    categoria_filtrada = list(filter(lambda x: x.categoria == novaCategoria, cateogira_lida))
+    if(len(categoria_filtrada)) > 0:
+      estoque_filtrado = list(filter(lambda x: x.produto.nome == nomeAlterar, estoque_lido))
+      if len(estoque_filtrado) > 0:
+        estoque_filtrado = list(filter(lambda x: x.produto.nome == novoNome, estoque_lido))
+        if len(estoque_filtrado) == 0:
+          estoque_lido = list(map(lambda x: Estoque(Produtos(novoNome, novoPreco, novaCategoria) ,novaQuantidade) if(x.produto.nome == nomeAlterar) else (x), estoque_lido ))
+          print('Produto alterado com sucesso!')
+        else:
+          print('Produto já cadastrado!')
+      else:
+        print('O produto que deseja alterar não existe!')
+
+      with open('estoque.txt', 'w') as arquivo:
+        for i in estoque_lido:
+          arquivo.writelines(i.produto.nome + "|" + i.produto.preco 
+          + "|" + i.produto.categoria + "|" + str(i.quantidade))
+          arquivo.writelines("\n")
+    else:
+      print('Categoria informada não existe!')
+
 
 estoque = ControllerEstoque()
 estoque.cadastrar('Banana', '10', 'Frutas', 10)
+estoque.alterar('Banana','Maça' , '15', 'Frutas', 10)
+estoque.remover('Maça')
