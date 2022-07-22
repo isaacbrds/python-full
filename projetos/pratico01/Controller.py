@@ -126,8 +126,64 @@ class ControllerEstoque:
     else:
       print('Categoria informada não existe!')
 
+  def mostrar(self, nome):
+    estoque_lido = DaoEstoque.ler()
 
-estoque = ControllerEstoque()
-estoque.cadastrar('Banana', '10', 'Frutas', 10)
-estoque.alterar('Banana','Maça' , '15', 'Frutas', 10)
-estoque.remover('Maça')
+    estoque_filtrado = list(filter(lambda x: x.produto.nome == nome, estoque_lido))
+
+    if len(estoque_filtrado) > 0:
+      for i in estoque_lido:
+        print(i.produto.nome + "|" + i.produto.preco)
+    else:
+      print('Produto não encontrada!')
+
+class ControllerVenda:
+  def cadastrar(self, nomeProduto, vendedor, comprador, quantidadeVendida):
+    estoque_lido = DaoEstoque.ler()
+    temporaria = []
+    existe_produto = False
+    tem_em_estoque = False
+
+    for i in estoque_lido:
+      if existe_produto == False:
+        if i.produto.nome == nomeProduto:
+          existe_produto = True
+          if int(i.quantidade) >= quantidadeVendida:
+            tem_em_estoque = True
+            i.quantidade = int(i.quantidade) - int(quantidadeVendida)
+
+            vendido = Venda(Produtos(i.produto.nome, i.produto.preco, i.produto.categoria), vendedor, comprador, quantidadeVendida)
+
+            valor_da_compra = int(quantidadeVendida) * int(i.produto.preco) 
+
+            DaoVenda.salvar(vendido)
+      
+      temporaria.append([Produtos(i.produto.nome, i.produto.preco, i.produto.categoria), i.quantidade])
+    
+    arquivo = open('estoque.txt', 'w')
+    arquivo.write("")
+
+    for i in temporaria:
+      with open('estoque.txt','a') as arquivo:
+        arquivo.writelines(i[0].nome + "|" + i[0].preco + "|" 
+        + i[0].categoria + "|" + str(i[1]))
+        arquivo.writelines("\n")
+
+    if existe_produto == False:
+      print('Produto não existe!')
+      return None
+    elif not tem_em_estoque:
+      print("O produto solicitado não possui essa quantidade em estoque!")
+    else:
+      print("Venda cadastrada com sucesso!")
+      return valor_da_compra
+
+  def relatorio_produtos(self):
+    vendas = DaoVenda.ler()
+    produtos = []
+    for i in vendas:
+      nome = i.itensVendido.nome
+      quantidade = i.quantidadeVendida
+
+venda = ControllerVenda()
+venda.cadastrar('Maçã', 'Vendedor', 'Comprador', 20)

@@ -1,2 +1,5 @@
-Maçã|20|Frutas|Vendedor|Comprador|10|19/07/2022
-Maçã|20|Frutas|Vendedor|Comprador|10|19/07/2022
+
+Maçã|20|Frutas|Vendedor|Comprador|20|22/07/2022
+Maçã|20|Frutas|Vendedor|Comprador|20|22/07/2022
+Maçã|20|Frutas|Vendedor|Comprador|20|22/07/2022
+Maçã|20|Frutas|Vendedor|Comprador|20|22/07/2022
