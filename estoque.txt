@@ -1,1 +1,2 @@
-Maçã|20|Frutas|10
+Uva|5|Frutas|30
+Pera|5|Frutas|30

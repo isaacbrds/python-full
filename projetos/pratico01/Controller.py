@@ -158,15 +158,15 @@ class ControllerVenda:
 
             DaoVenda.salvar(vendido)
       
-      temporaria.append([Produtos(i.produto.nome, i.produto.preco, i.produto.categoria), i.quantidade])
+      temporaria.append(Estoque(Produtos(i.produto.nome, i.produto.preco, i.produto.categoria), i.quantidade))
     
     arquivo = open('estoque.txt', 'w')
     arquivo.write("")
 
     for i in temporaria:
       with open('estoque.txt','a') as arquivo:
-        arquivo.writelines(i[0].nome + "|" + i[0].preco + "|" 
-        + i[0].categoria + "|" + str(i[1]))
+        arquivo.writelines(i.produto.nome + "|" + i.produto.preco + "|" 
+        + i.produto.categoria + "|" + str(i.quantidade))
         arquivo.writelines("\n")
 
     if existe_produto == False:
@@ -178,12 +178,34 @@ class ControllerVenda:
       print("Venda cadastrada com sucesso!")
       return valor_da_compra
 
-  def relatorio_produtos(self):
+  def relatorioProdutos(self):
     vendas = DaoVenda.ler()
     produtos = []
     for i in vendas:
       nome = i.itensVendido.nome
       quantidade = i.quantidadeVendida
+      tamanho = list(filter(lambda x: x['produto'] == nome, produtos))
+      if len(tamanho) > 0:
+        produtos = list(map(lambda x: {'produto': nome, 'quantidade': int(x['quantidade']) + int(quantidade)}
+        if(x['produto'] == nome) else(x), produtos))
+      else:
+        produtos.append({'produto': nome, 'quantidade': int(quantidade)})
+
+    
+    ordenado = sorted(produtos, key=lambda k: k['quantidade'], reverse=True)
+      
+    print('Esses são os produtos mais vendidos')
+    
+    a = 1
+    for i in ordenado:
+      print(f'================ Produto[{a}] ===============')
+      print(f"Produto: {i['produto']}\n" f"Quantidade: {i['quantidade']}\n")
+
+      a += 1
+
+# estoque = ControllerEstoque()
+# estoque.cadastrar('Pera', '5', 'Frutas', 50)
 
 venda = ControllerVenda()
-venda.cadastrar('Maçã', 'Vendedor', 'Comprador', 20)
+#venda.cadastrar('Pera', 'Vendedor', 'Comprador', 10)
+venda.relatorioProdutos()
