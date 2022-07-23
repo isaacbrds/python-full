@@ -225,10 +225,29 @@ class ControllerVenda:
     
     print(f"Total vendido: {total}")
 
+class ControllerFornecedor:
+  def cadastrar(self, nome, cnpj, telefone, categoria):
+    fornecedor = DaoFornecedor.ler()
+    listaCnpj = list(filter(lambda x: x.cnpj == cnpj, fornecedor))
+    listaTelfone = list(filter(lambda x: x.telefone == telefone, fornecedor))
+    
+    if len(listaCnpj) > 0:
+      print('Cnpj já foi cadastrado!')
+    elif len(listaTelfone) > 0:
+      print('Telfone já foi cadastrado!')
+    else:
+      if len(cnpj) == 18 and len(telefone) <= 15 and len(telefone) >= 10:
+        DaoFornecedor.salvar(Fornecedor(nome, cnpj, telefone, categoria))
+        print('Fornecedor cadastrado com sucesso!')
+      else:
+        print('Digite um cnpj ou telefone válido!')
 # estoque = ControllerEstoque()
 # estoque.cadastrar('Pera', '5', 'Frutas', 50)
 
-venda = ControllerVenda()
+#venda = ControllerVenda()
 #venda.cadastrar('Pera', 'Vendedor', 'Comprador', 10)
 #venda.relatorioProdutos()
-venda.mostrar("22/07/2022", "22/07/2022")
+#venda.mostrar("22/07/2022", "22/07/2022")
+
+fornecedor = ControllerFornecedor()
+fornecedor.cadastrar('Cauã e Adriana Publicidade e Propaganda ME', '41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
