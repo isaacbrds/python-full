@@ -294,6 +294,22 @@ class ControllerFornecedor:
             )
     else:
       print('Fornecedor não encontrador!')
+
+class ControllerCliente:
+  def cadastrar(self, nome, telefone, cpf, email, endereco):
+    cliente = DaoPessoa.ler()
+
+    cliente_filtrado = list(filter(lambda x: x.cpf == cpf, cliente))
+    if len(cliente_filtrado) > 0:
+      print('CPF já existe!')
+    else:
+      if len(cpf) == 14 and len(telefone) >= 10 and len(telefone) <= 15:
+        DaoPessoa.salvar(nome, telefone, cpf, email, endereco)
+        print('Cliente salvo com sucesso!')
+      else:
+        print('Digite um cpf ou cnpj válido')
+  
+  
 # estoque = ControllerEstoque()
 # estoque.cadastrar('Pera', '5', 'Frutas', 50)
 
