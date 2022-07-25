@@ -115,3 +115,25 @@ class DaoPessoa:
       clientes.append(Pessoa(i[0], i[1], i[2], i[3], i[4]))
     
     return clientes
+
+class DaoFuncionario:
+  @classmethod
+  def salvar(cls, pessoas: Funcionario):
+    with open('funcionario.txt', 'a') as arquivo:
+      arquivo.writelines(pessoas.clt + "|" + pessoas.nome + "|" + pessoas.telefone + "|" + pessoas.cpf
+      + "|" + pessoas.email + "|" + pessoas.endereco)
+      arquivo.writelines("\n")
+  
+  @classmethod
+  def ler(cls):
+    with open('funcionario.txt', 'r') as arquivo:
+      cls.funcionarios = arquivo.readlines()
+    
+    cls.funcionarios = list(map(lambda x: x.replace('\n', ''), cls.funcionarios))
+    cls.funcionarios = list(map(lambda x: x.split('|'), cls.funcionarios))
+
+    funcionarios = [] 
+    for i in cls.funcionarios:
+      funcionarios.append(Funcionario(i[0], i[1], i[2], i[3], i[4], i[5]))
+    
+    return funcionarios

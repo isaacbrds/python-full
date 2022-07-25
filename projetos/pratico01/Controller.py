@@ -48,6 +48,7 @@ class ControllerCategoria:
         print('A categoria que deseja alterar já existe')
     else: 
       print('A categoria que deseja alterar não existe!')
+      return None
     
     with open('categoria.txt', 'w') as arquivo:
       for i in categorias:
@@ -117,6 +118,7 @@ class ControllerEstoque:
           print('Produto já cadastrado!')
       else:
         print('O produto que deseja alterar não existe!')
+        return None
 
       with open('estoque.txt', 'w') as arquivo:
         for i in estoque_lido:
@@ -318,7 +320,8 @@ class ControllerCliente:
       cliente_filtrado = list(map(lambda x: Pessoa(novoNome, novoTelefone, novoCpf, novoEmail, novoEndereco) 
               if x.nome == nomeAlterar else(x), cliente))
     else:
-      print('Cliente não encontrado!')              
+      print('Cliente não encontrado!')    
+      return None          
     
     with open('cliente.txt', 'w') as arquivo:
       for i in cliente_filtrado:
@@ -361,3 +364,79 @@ class ControllerCliente:
         arquivo.writelines("\n")
       
       print('Cliente removido com sucesso!')
+
+
+class ControllerFuncionario:
+  def cadastrar(self, nome, telefone, cpf, email, endereco, clt):
+    funcionario = DaoFuncionario.ler()
+
+    funcionario_cpf = list(filter(lambda x: x.cpf == cpf, funcionario))
+    funcionario_clt = list(filter(lambda x: x.clt == clt, funcionario))
+
+    if len(funcionario_cpf) > 0:
+      print('CPF já existe!')
+    elif len(funcionario_clt) > 0:
+      print('Funcionário com essa CLT já existe!')
+    else:
+      if len(cpf) == 14 and len(telefone) >= 10 and len(telefone) <= 15: 
+        DaoFuncionario.salvar(Funcionario(clt, nome, telefone, cpf, email, endereco))
+        print('Funcionário salvo com com sucesso!')
+      else:
+        print('Digite um cpf ou um telefone válido!')
+
+  def alterar(self, nomeAlterar, novoNome, novoTelefone, novoCpf, novoEmail, novoEndereco, novaClt):
+    funcionario = DaoFuncionario.ler()
+    funcionario_filtrado = list(filter(lambda x: x.nome == nomeAlterar, funcionario))
+    
+    if len(funcionario_filtrado) == 0:
+      print('Funcionario não localizado!')
+      return None
+    else:
+      funcionario_filtrado = list(map(lambda x: Funcionario(novaClt, novoNome, novoTelefone,novoCpf, novoEmail, novoEndereco) 
+                if x.nome == nomeAlterar else(x), funcionario))
+      
+    with open('funcionario.txt', 'w') as arquivo:
+      for i in funcionario_filtrado:
+        arquivo.writelines(i.clt +"|" + i.nome + "|" + i.telefone + "|" + i.cpf + "|" + i.email + "|" + i.endereco)
+        arquivo.writelines("\n")
+
+      print('Funcionario alterado com sucesso!')
+
+  def mostrar(self, nome):
+    funcionario = DaoFuncionario.ler()
+
+    funcionario_filtrado = list(filter(lambda x: x.nome == nome, funcionario))
+    
+    if len(funcionario_filtrado) == 0:
+      print('Funcionário não localizado!')
+    else:
+      for i in funcionario_filtrado:
+        print(f'============= Cliente ============')
+        print(f'Nome: {i.nome}\n'
+            f'CPF: {i.cpf}\n'
+            f'Email: {i.email}\n'
+            f'Telefone: {i.telefone}\n'
+            f'Endereço: {i.endereco}\n'
+            f'CLT: {i.clt}\n'
+            )
+
+  def remover(self, nome):
+    funcionario = DaoFuncionario.ler()
+    funcionario_filtrado = list(filter(lambda x: x.nome == nome, funcionario))
+    if len(funcionario_filtrado) > 0:
+      for i in range(len(funcionario)):
+        if funcionario_filtrado[i].nome == nome:
+          del funcionario[i]
+          break
+    else:
+      print('Funcionario não encontrado!')
+      return None
+      
+    with open('funcionario.txt', 'w') as arquivo:
+      for i in funcionario:
+        arquivo.writelines(i.nome + "|" + i.telefone + "|" + i.cpf + 
+       '|' + i.email + "|" + i.endereco + "|" + i.clt) 
+        arquivo.writelines("\n")
+      
+      print('Funcionario removido com sucesso!')
+
