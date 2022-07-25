@@ -104,8 +104,8 @@ class ControllerEstoque:
 
   def alterar(self, nomeAlterar, novoNome, novoPreco, novaCategoria, novaQuantidade):
     estoque_lido = DaoEstoque.ler()  
-    cateogira_lida = DaoCategoria.ler()
-    categoria_filtrada = list(filter(lambda x: x.categoria == novaCategoria, cateogira_lida))
+    categoria_lida = DaoCategoria.ler()
+    categoria_filtrada = list(filter(lambda x: x.categoria == novaCategoria, categoria_lida))
     if(len(categoria_filtrada)) > 0:
       estoque_filtrado = list(filter(lambda x: x.produto.nome == nomeAlterar, estoque_lido))
       if len(estoque_filtrado) > 0:
@@ -241,6 +241,59 @@ class ControllerFornecedor:
         print('Fornecedor cadastrado com sucesso!')
       else:
         print('Digite um cnpj ou telefone válido!')
+
+  def alterar(self, nomeAlterar, novoNome, novoCnpj, novoTelefone, novaCategoria):
+    fornecedor = DaoFornecedor.ler()
+    
+    fornecedor_filtrado = list(filter(lambda x: x.nome == nomeAlterar, fornecedor))
+    if len(fornecedor_filtrado) > 0:
+      fornecedor_filtrado = list(filter(lambda x: x.cnpj == novoCnpj, fornecedor_filtrado))
+      if len(fornecedor_filtrado) == 0:
+        fornecedor = list(map(lambda x: Fornecedor(novoNome, novoCnpj, novoTelefone, novaCategoria) if x.nome == nomeAlterar else(x)))
+      else:
+        print('CNPJ já existe')
+    
+    else:
+      print('O fornecedor que deseja alterar não existe!')
+    
+    with open('fornecedor.txt', 'w') as arquivo:
+      for i in fornecedor:
+        arquivo.writelines(i.nome + "|" + i.cnpj + "|" + i.telefone + "|" + str(i.categoria))
+        arquivo.writelines("\n")
+      print('Fornecedor alterado com sucesso!')
+
+  def remover(self, nome):
+    fornecedor = DaoFornecedor.ler()
+
+    fornecedor_filtrado = list(filter(lambda x: x.nome == nome, fornecedor))
+    if len(fornecedor_filtrado) > 0:
+      for i in range(len(fornecedor)):
+        if fornecedor[i].nome == nome:
+          del fornecedor[i]
+          break
+    else:
+      print('Fornecedor que deseja remover não existe!')
+      return None
+
+    with open('fornecedor.txt', 'w') as arquivo:
+      for i in fornecedor:
+        arquivo.writelines(i.nome + "|" + i.cnpj + "|" + i.telefone + "|" + str(i.categoria))
+        arquivo.writelines("\n")
+      print('Fornecedor removido com sucesso!')
+
+  def mostrar(self, nome):
+    fornecedor = DaoFornecedor.ler()
+    fornecedor_filtrado = list(filter(lambda x: x.nome == nome, fornecedor))
+    if len(fornecedor_filtrado) > 0:
+      for i in fornecedor_filtrado:
+        print(f'============= Fornecedor============')
+        print(f'Nome: {i.nome}\n'
+            f'Categoria: {i.categoria}\n'
+            f'Cnpj: {i.cnpj}\n'
+            f'Telefone: {i.telefone}\n'
+            )
+    else:
+      print('Fornecedor não encontrador!')
 # estoque = ControllerEstoque()
 # estoque.cadastrar('Pera', '5', 'Frutas', 50)
 
@@ -251,3 +304,6 @@ class ControllerFornecedor:
 
 fornecedor = ControllerFornecedor()
 fornecedor.cadastrar('Cauã e Adriana Publicidade e Propaganda ME', '41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
+# fornecedor.alterar('Cauã e Adriana Publicidade e Propaganda ME','Cauã e Adriana Publicidade e Propaganda ME'.upper(),'41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
+#fornecedor.remover('Cauã e Adriana Publicidade e Propaganda ME')
+fornecedor.mostrar('Cauã e Adriana Publicidade e Propaganda ME')
