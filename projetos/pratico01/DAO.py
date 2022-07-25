@@ -97,14 +97,14 @@ class DaoFornecedor:
 class DaoPessoa:
   @classmethod
   def salvar(cls,pessoas: Pessoa):
-    with open('clientes.txt', 'a') as arquivo:
-      arquivo.writelines(pessoas.nome + "|" + pessoas.telefone + pessoas.cpf
+    with open('cliente.txt', 'a') as arquivo:
+      arquivo.writelines(pessoas.nome + "|" + pessoas.telefone + "|" + pessoas.cpf
       + "|" + pessoas.email + "|" + pessoas.endereco)
       arquivo.writelines("\n")
 
   @classmethod
   def ler(cls):
-    with open('clientes', 'r') as arquivo:
+    with open('cliente.txt', 'r') as arquivo:
       cls.clientes = arquivo.readlines()
     
     cls.clientes = list(map(lambda x: x.replace('\n', ''), cls.clientes))

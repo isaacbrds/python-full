@@ -247,9 +247,9 @@ class ControllerFornecedor:
     
     fornecedor_filtrado = list(filter(lambda x: x.nome == nomeAlterar, fornecedor))
     if len(fornecedor_filtrado) > 0:
-      fornecedor_filtrado = list(filter(lambda x: x.cnpj == novoCnpj, fornecedor_filtrado))
+      fornecedor_filtrado = list(filter(lambda x: x.cnpj == novoCnpj, fornecedor))
       if len(fornecedor_filtrado) == 0:
-        fornecedor = list(map(lambda x: Fornecedor(novoNome, novoCnpj, novoTelefone, novaCategoria) if x.nome == nomeAlterar else(x)))
+        fornecedor = list(map(lambda x: Fornecedor(novoNome, novoCnpj, novoTelefone, novaCategoria) if x.nome == nomeAlterar else(x), fornecedor_filtrado))
       else:
         print('CNPJ já existe')
     
@@ -304,12 +304,28 @@ class ControllerCliente:
       print('CPF já existe!')
     else:
       if len(cpf) == 14 and len(telefone) >= 10 and len(telefone) <= 15:
-        DaoPessoa.salvar(nome, telefone, cpf, email, endereco)
+        DaoPessoa.salvar(Pessoa(nome, telefone, cpf, email, endereco))
         print('Cliente salvo com sucesso!')
       else:
         print('Digite um cpf ou cnpj válido')
-  
-  
+
+  def alterar(self, nomeAlterar, novoNome, novoCpf, novoTelefone, novoEmail, novoEndereco):
+    cliente = DaoPessoa.ler()
+
+    cliente_filtrado = list(filter(lambda x: x.nome == nomeAlterar, cliente))
+
+    if len(cliente_filtrado) > 0:
+      cliente_filtrado = list(map(lambda x: Pessoa(novoNome, novoTelefone, novoCpf, novoEmail, novoEndereco) 
+              if x.nome == nomeAlterar else(x), cliente))
+    else:
+      print('Cliente não encontrado!')              
+    
+    with open('cliente.txt', 'w') as arquivo:
+      for i in cliente_filtrado:
+        arquivo.writelines(i.nome + "|" + i.telefone + "|" + i.cpf + "|" + i.email + "|" + i.endereco)
+        arquivo.writelines("\n")
+
+      print('Cliente alterado com sucesso!')
 # estoque = ControllerEstoque()
 # estoque.cadastrar('Pera', '5', 'Frutas', 50)
 
@@ -318,8 +334,14 @@ class ControllerCliente:
 #venda.relatorioProdutos()
 #venda.mostrar("22/07/2022", "22/07/2022")
 
-fornecedor = ControllerFornecedor()
-fornecedor.cadastrar('Cauã e Adriana Publicidade e Propaganda ME', '41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
-# fornecedor.alterar('Cauã e Adriana Publicidade e Propaganda ME','Cauã e Adriana Publicidade e Propaganda ME'.upper(),'41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
-#fornecedor.remover('Cauã e Adriana Publicidade e Propaganda ME')
-fornecedor.mostrar('Cauã e Adriana Publicidade e Propaganda ME')
+# fornecedor = ControllerFornecedor()
+# fornecedor.cadastrar('Cauã e Adriana Publicidade e Propaganda ME', '41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
+# # fornecedor.alterar('Cauã e Adriana Publicidade e Propaganda ME','Cauã e Adriana Publicidade e Propaganda ME'.upper(),'41.651.212/0001-16' ,'(85) 2627-1770', 'Frutas')
+# #fornecedor.remover('Cauã e Adriana Publicidade e Propaganda ME')
+# fornecedor.mostrar('Cauã e Adriana Publicidade e Propaganda ME')
+
+cliente = ControllerCliente()
+#cliente.cadastrar('Cliente', '88 2101 4311', '123.456.789-01', 'cliente@mail.com', 'Rua da Gripe')
+#cliente.cadastrar('Cliente02', '88 2102 4311', '123.456.789-11', 'cliente@mail.com', 'Rua da Gripe')
+#cliente.cadastrar('Cliente03', '88 2103 4311', '123.456.789-21', 'cliente@mail.com', 'Rua da Gripe')
+cliente.alterar('Cliente13', 'Cliente03-alterado-agora' , '88 2103 4311', '123.456.789-21', 'cliente@mail.com', 'Rua da Gripe')
