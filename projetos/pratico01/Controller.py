@@ -53,7 +53,15 @@ class ControllerCategoria:
       categoria_nao_existe = list(filter(lambda x: x.categoria == categoriaAlterada, categorias))
       if len(categoria_nao_existe) == 0:
         categorias = list(map(lambda x: Categoria(categoriaAlterada) if(x.categoria == categoriaAlterar) else(x), categorias))
-        #TODO: alterar categoria no estoque
+        estoque = DaoEstoque.ler()
+
+        estoque = list(map(lambda x: Estoque(Produtos(x.produto.nome, x.produto.preco, categoriaAlterada), x.quantidade) if x.produto.categoria == categoriaAlterar else x, estoque ))
+    
+        with open('estoque.txt', 'w') as arquivo:
+          for i in estoque:
+            arquivo.writelines(i.produto.nome + "|" + i.produto.preco + "|" 
+            + i.produto.categoria + "|" + str(i.quantidade))
+            arquivo.writelines("\n")
         print('A alteração foi realizada com sucesso!')
       else:
         print('A categoria que deseja alterar já existe')
@@ -453,4 +461,5 @@ class ControllerFuncionario:
 
 
 categoria = ControllerCategoria()
-categoria.remover("Frutas")
+#categoria.remover("TESTE")
+categoria.alterar('Sem Categoria', 'Frutas')

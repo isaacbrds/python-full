@@ -1,2 +1,2 @@
-Uva|5|Sem Categoria|30
-Pera|5|Sem Categoria|30
+Uva|5|Frutas|30
+Pera|5|Frutas|30
