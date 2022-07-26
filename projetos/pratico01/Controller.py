@@ -33,6 +33,17 @@ class ControllerCategoria:
         for i in categorias:
           arquivo.writelines(i.categoria)
           arquivo.writelines('\n')
+    
+    estoque = DaoEstoque.ler()
+
+    estoque = list(map(lambda x: Estoque(Produtos(x.produto.nome, x.produto.preco, 'Sem Categoria'), x.quantidade) if x.produto.categoria == categoriaRemover else x, estoque ))
+    
+    with open('estoque.txt', 'w') as arquivo:
+      for i in estoque:
+        arquivo.writelines(i.produto.nome + "|" + i.produto.preco + "|" 
+        + i.produto.categoria + "|" + str(i.quantidade))
+        arquivo.writelines("\n")
+    
 
   def alterar(self,categoriaAlterar, categoriaAlterada):
     categorias = DaoCategoria.ler()
@@ -440,3 +451,6 @@ class ControllerFuncionario:
       
       print('Funcionario removido com sucesso!')
 
+
+categoria = ControllerCategoria()
+categoria.remover("Frutas")
