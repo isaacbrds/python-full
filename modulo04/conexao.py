@@ -38,7 +38,30 @@ def insere_dado(nome):
 
     except Exception as e:
       print(f"Erro aconteceu {e}")
+
+def recupera_dados():
+  with connection.cursor() as cursor:
+    try:
+      sql = f"SELECT * FROM TESTE"
+      cursor.execute(sql)
+      resultado = cursor.fetchall()
+      print(resultado)
+    except Exception as e:
+      print(f"Erro aconteceu{e}")
+
+def atualiza_dados(nome, novoNome):
+  with connection.cursor() as cursor:
+    try:
+      sql = f"UPDATE TESTE set nome=('{novoNome}') where nome=('{nome}')"
+      cursor.execute(sql)
+      print(f'Dados alterados com sucesso!')
+
+    except Exception as e:
+      print(f"Erro aconteceu{e}")
 #criar_tabela('TESTE')
 #remover_tabela('TESTE2')
 insere_dado('Jão')
+recupera_dados()
+atualiza_dados('Jão', 'Pedro')
+recupera_dados()
 connection.close()
