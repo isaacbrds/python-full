@@ -29,6 +29,16 @@ def remover_tabela(nome):
     except Exception as e:
       print(f"Erro aconteceu {e}")
 
-criar_tabela('TESTE2')
-remover_tabela('TESTE2')
+def insere_dado(nome):
+  with connection.cursor() as cursor:
+    try:
+      sql = f"INSERT INTO TESTE VALUES ('{nome}')"
+      cursor.execute(sql)
+      print(f'Dados inseridos com sucesso!')
+
+    except Exception as e:
+      print(f"Erro aconteceu {e}")
+#criar_tabela('TESTE')
+#remover_tabela('TESTE2')
+insere_dado('Jão')
 connection.close()
