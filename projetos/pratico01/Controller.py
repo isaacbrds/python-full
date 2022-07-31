@@ -153,8 +153,8 @@ class ControllerEstoque:
     estoque_filtrado = list(filter(lambda x: x.produto.nome == nome, estoque_lido))
 
     if len(estoque_filtrado) > 0:
-      for i in estoque_lido:
-        print(i.produto.nome + "|" + i.produto.preco)
+      for i in estoque_filtrado:
+        print('-> ' + i.produto.nome + "|" + i.produto.preco + "|" + i.produto.categoria)
     else:
       print('Produto não encontrada!')
 
@@ -459,7 +459,3 @@ class ControllerFuncionario:
       
       print('Funcionario removido com sucesso!')
 
-
-categoria = ControllerCategoria()
-#categoria.remover("TESTE")
-categoria.alterar('Sem Categoria', 'Frutas')
