@@ -58,10 +58,21 @@ def atualiza_dados(nome, novoNome):
 
     except Exception as e:
       print(f"Erro aconteceu{e}")
+
+def remove_dados(nome):
+  with connection.cursor() as cursor:
+    try:
+      sql = "DELETE FROM TESTE where nome=('{nome}')"
+      cursor.execute(sql)
+      print('Nome foi excluido!')
+    except Exception as e:
+      print(f'Aconteceu um erro {e}')
 #criar_tabela('TESTE')
 #remover_tabela('TESTE2')
-insere_dado('Jão')
-recupera_dados()
-atualiza_dados('Jão', 'Pedro')
-recupera_dados()
+# insere_dado('Jão')
+# recupera_dados()
+# atualiza_dados('Jão', 'Pedro')
+# recupera_dados()
+# remove_dados('Pedro')
+#recupera_dados()
 connection.close()
