@@ -4,7 +4,7 @@ import pymysql.cursors
 # Connect to the database
 connection = pymysql.connect(host='localhost',
                              user='usuario',
-                             password='Db123@2022',
+                             password='S3cr3t4#',
                              database='pythonfullcursos',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
