@@ -20,8 +20,9 @@ def retorna_session():
 
 session = retorna_session()
 
-pessoa = session.query(Pessoa).filter(Pessoa.id == 1)
-#pessoa = pessoa.filter(Pessoa.nome == 'Isaac')
+pessoa = session.query(Pessoa).filter(Pessoa.id == 1).all()
+print(pessoa[0].nome)
+pessoa[0].nome = 'Usuário'
+print(pessoa[0].nome)
+session.commit()
 
-for i in pessoa:
-  print(i.id, i.nome)
