@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 conexao = "sqlite:///projeto.db"
 
 engine = create_engine(conexao, echo=True)
-Session = sessionmaker(engine)
+Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 
